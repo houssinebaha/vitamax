@@ -1,0 +1,21 @@
+{
+  "name": "landing-page",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "shopify:login": "SHOPIFY_FLAG_STORE=vitamax-6460.myshopify.com shopify auth login",
+    "shopify:pull": "cd theme && SHOPIFY_FLAG_STORE=vitamax-6460.myshopify.com shopify theme pull",
+    "shopify:push": "cd theme && SHOPIFY_FLAG_STORE=vitamax-6460.myshopify.com shopify theme push",
+    "shopify:dev": "cd theme && SHOPIFY_FLAG_STORE=vitamax-6460.myshopify.com shopify theme dev",
+    "shopify:deploy": "node scripts/sync-to-theme.js && cd theme && shopify theme push"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@shopify/cli": "^3.91.0",
+    "@shopify/theme": "^3.58.2"
+  }
+}

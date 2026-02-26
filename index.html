@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="fr">
+<!-- 
+  ========================================
+  SHOPIFY INTEGRATION - ACTION REQUISE
+  ========================================
+  Avant de publier, remplacer dans ce fichier :
+  - VARIANT_ID_DECOUVERTE → ID du variant "1 pack" dans Shopify
+  - VARIANT_ID_MENSUEL    → ID du variant "2 packs" dans Shopify  
+  - VARIANT_ID_TRIMESTRIEL → ID du variant "6 packs" dans Shopify
+  
+  Pour trouver les Variant IDs : Shopify Admin → Produits → 
+  [Nom du produit] → clic droit "Inspecter" sur le variant → 
+  chercher "variant" dans le HTML, ou utiliser l'API Shopify Admin.
+  ========================================
+-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>VITAMAX | Beauté naturelle, Éclat & Jeunesse | Maroc</title>
+  <meta name="description" content="Pack Beauté & Jeunesse VITAMAX. Collagène, multivitamines et actifs hydratants pour une peau radieuse. Livraison Maroc, paiement à la livraison.">
+  <!-- Open Graph pour partage réseaux sociaux (Maroc/Instagram) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="VITAMAX | Beauté naturelle, Éclat & Jeunesse | Maroc">
+  <meta property="og:description" content="Pack Beauté & Jeunesse VITAMAX. Collagène, multivitamines et actifs hydratants pour une peau radieuse. Livraison Maroc, paiement à la livraison.">
+  <meta property="og:image" content="image/vitamax-produits-hero.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="">
+  <meta property="og:locale" content="fr_MA">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-dark: #2c2c2c;
+      --color-text: #4a4a4a;
+      --color-muted: #7a7a7a;
+      --color-primary: #3d5a4a;
+      --color-primary-hover: #4a6b58;
+      --color-bg: #faf9f7;
+      --color-bg-cream: #f5f3ef;
+      --color-white: #ffffff;
+      --color-border: rgba(0,0,0,0.08);
+      --container: 1200px;
+      --space: 24px;
+      --radius: 4px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--color-text);
+      background: var(--color-bg);
+      padding-top: 80px;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* Top bar (announcement + header) - hides on scroll down */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .top-bar.top-bar-hidden {
+      transform: translateY(-100%);
+    }
+
+    .announcement {
+      background: var(--color-dark);
+      color: var(--color-white);
+      text-align: center;
+      padding: 10px 20px;
+      font-size: 0.875rem;
+    }
+
+    .announcement a { text-decoration: underline; }
+
+    /* Header */
+    .header {
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .header-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 var(--space);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 88px;
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-dark);
+    }
+
+    .logo img {
+      height: 88px;
+      width: auto;
+      display: block;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-link {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--color-text);
+    }
+
+    .nav-link:hover { color: var(--color-primary); }
+
+    .header-utils {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text);
+      border-radius: var(--radius);
+    }
+
+    .header-icon:hover { background: var(--color-bg); }
+
+    /* Hero */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px var(--space) 64px;
+      position: relative;
+      background-image: url("image/vitamax-produits-hero.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.75) 100%);
+      z-index: 0;
+    }
+
+    .hero-decor {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      opacity: 0.2;
+      color: var(--color-muted);
+      pointer-events: none;
+    }
+
+    .hero-decor svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-decor-1 { top: 15%; left: 6%; z-index: 1; }
+    .hero-decor-2 { bottom: 15%; right: 8%; transform: rotate(180deg); z-index: 1; }
+
+    .hero .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .hero-content h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 600;
+      color: var(--color-dark);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .hero-subtitle {
+      font-size: 0.8125rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-muted);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .hero-price {
+      font-size: 0.8125rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-muted);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .hero-price-unit {
+      font-weight: 400;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 32px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: var(--color-white);
+    }
+
+    .btn-primary:hover {
+      background: var(--color-primary-hover);
+    }
+
+    .btn-outline {
+      background: var(--color-white);
+      color: var(--color-primary);
+      border: 2px solid var(--color-primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--color-bg);
+    }
+
+    .hero-delivery {
+      font-size: 0.9375rem;
+      color: var(--color-muted);
+      margin-top: 16px;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .hero-trust-badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px 32px;
+      font-size: 0.8125rem;
+      color: var(--color-text);
+      font-weight: 500;
+    }
+
+    .trust-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .trust-icon {
+      font-size: 1rem;
+    }
+
+    /* Section titles */
+    .section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-muted);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 600;
+      color: var(--color-dark);
+    }
+
+    /* Categories */
+    .categories {
+      padding: 80px var(--space);
+      background: var(--color-white);
+    }
+
+    .categories-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+    }
+
+    .categories-grid {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .category-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 200px;
+      transition: transform 0.25s ease;
+    }
+
+    .category-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .category-circle {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      margin-bottom: 16px;
+    }
+
+    .category-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .category-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-dark);
+      margin-bottom: 4px;
+    }
+
+    .category-count {
+      font-size: 0.8125rem;
+      color: var(--color-muted);
+    }
+
+    /* Avantages produits */
+    .benefits {
+      padding: 80px var(--space);
+      background: linear-gradient(180deg, var(--color-white) 0%, var(--color-bg) 100%);
+    }
+
+    .benefits-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+    }
+
+    .benefits-intro {
+      font-size: 1.0625rem;
+      color: var(--color-text);
+      max-width: 600px;
+      margin: 0 auto 56px;
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .benefit-card {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 48px;
+      align-items: center;
+      padding: 48px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .benefit-card:last-child { border-bottom: none; }
+
+    .benefit-card:nth-child(even) {
+      direction: rtl;
+    }
+
+    .benefit-card:nth-child(even) > * {
+      direction: ltr;
+    }
+
+    .benefit-image {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+
+    .benefit-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .benefit-content h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-dark);
+      margin-bottom: 8px;
+    }
+
+    .benefit-content .benefit-subtitle {
+      font-size: 0.875rem;
+      color: var(--color-primary);
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .benefit-list {
+      list-style: none;
+    }
+
+    .benefit-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      font-size: 1rem;
+      color: var(--color-text);
+      line-height: 1.5;
+    }
+
+    .benefit-list li::before {
+      content: '✓';
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      background: var(--color-primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    @media (max-width: 768px) {
+      .benefit-card {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 32px 0;
+        direction: ltr;
+      }
+      .benefit-card:nth-child(even) { direction: ltr; }
+      .benefit-card:nth-child(even) > * { direction: ltr; }
+      .benefit-image { max-width: 200px; margin: 0 auto; }
+    }
+
+    /* Brand / Collection */
+    .collection {
+      padding: 80px var(--space);
+      background: var(--color-bg-cream);
+    }
+
+    .collection-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .collection-content .section-label { text-align: center; }
+
+    .collection-content h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.75rem, 3vw, 2.25rem);
+      font-weight: 600;
+      color: var(--color-dark);
+      margin-bottom: 20px;
+    }
+
+    .collection-content p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--color-text);
+      margin-bottom: 24px;
+    }
+
+    .btn-dark {
+      background: var(--color-dark);
+      color: var(--color-white);
+    }
+
+    .btn-dark:hover {
+      background: #3a3a3a;
+    }
+
+    /* Featured Products */
+    .products {
+      padding: 80px var(--space);
+      background: var(--color-white);
+    }
+
+    .products-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+    }
+
+    .products-tagline {
+      font-size: 1rem;
+      color: var(--color-text);
+      max-width: 540px;
+      margin: -32px auto 48px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .product-card {
+      text-align: center;
+      transition: transform 0.25s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .product-image-wrap {
+      position: relative;
+      aspect-ratio: 1;
+      background: var(--color-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .product-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 24px;
+    }
+
+    .product-wishlist {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.125rem;
+      color: var(--color-muted);
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .product-card:hover .product-wishlist {
+      opacity: 1;
+    }
+
+    .product-wishlist:hover {
+      color: var(--color-primary);
+    }
+
+    .product-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-dark);
+      margin-bottom: 8px;
+    }
+
+    .product-price {
+      font-size: 0.9375rem;
+      color: var(--color-text);
+      margin-bottom: 12px;
+    }
+
+    .product-price .sale { color: var(--color-primary); }
+
+    /* Pack CTA Section */
+    .pack-cta-section {
+      background: var(--color-bg-cream);
+    }
+
+    .pack-cta-block {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 64px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .pack-cta-image {
+      flex: 0 0 280px;
+    }
+
+    .pack-cta-image img {
+      width: 100%;
+      height: auto;
+    }
+
+    .pack-cta-content h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.5rem;
+      color: var(--color-dark);
+      margin-bottom: 12px;
+    }
+
+    .pack-cta-content p {
+      color: var(--color-text);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .pack-cta-block {
+        flex-direction: column;
+        gap: 32px;
+      }
+      .pack-cta-image { flex: none; max-width: 240px; }
+    }
+
+    /* Témoignages */
+    .testimonials {
+      padding: 80px var(--space);
+      background: var(--color-white);
+    }
+
+    .testimonials-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+    }
+
+    .testimonials-intro {
+      font-size: 1.0625rem;
+      color: var(--color-text);
+      max-width: 600px;
+      margin: 0 auto 48px;
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .testimonial-card {
+      background: var(--color-bg);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .testimonial-stars {
+      color: #e6b800;
+      font-size: 1.25rem;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+
+    .testimonial-text {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--color-text);
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      font-size: 0.875rem;
+      color: var(--color-muted);
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Before / After */
+    .before-after {
+      padding: 80px var(--space);
+      background: var(--color-white);
+    }
+
+    .before-after-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .before-after-inner .section-label { text-align: center; }
+
+    .before-after-inner h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 600;
+      color: var(--color-dark);
+      margin-bottom: 16px;
+    }
+
+    .before-after-intro {
+      font-size: 1.0625rem;
+      line-height: 1.7;
+      color: var(--color-text);
+      max-width: 640px;
+      margin: 0 auto 32px;
+    }
+
+    .before-after-slider-wrap {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      margin-bottom: 24px;
+    }
+
+    .before-after-slider {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/10;
+      max-height: 500px;
+      cursor: col-resize;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .ba-layer {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .ba-layer img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .ba-after {
+      clip-path: inset(0 0 0 50%);
+      transition: clip-path 0.05s ease-out;
+    }
+
+    .ba-handle {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 4px;
+      height: 100%;
+      background: white;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      z-index: 3;
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.2);
+      cursor: col-resize;
+    }
+
+    .ba-handle-line {
+      width: 2px;
+      height: 40px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 1px;
+    }
+
+    .ba-handle-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: var(--color-primary);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+
+    .before-after-labels {
+      display: flex;
+      justify-content: space-between;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      padding: 20px 32px;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+      color: white;
+      font-weight: 600;
+      font-size: 1.125rem;
+    }
+
+    .before-after-proof {
+      font-size: 0.9375rem;
+      color: var(--color-muted);
+      font-style: italic;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* Abonnement */
+    .abonnement {
+      padding: 80px var(--space);
+      background: var(--color-white);
+    }
+
+    .abonnement-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+    }
+
+    .abonnement-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 40px;
+    }
+
+    .abonnement-toggle-btn {
+      padding: 12px 24px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--color-muted);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .abonnement-toggle-btn:first-child {
+      border-radius: var(--radius) 0 0 var(--radius);
+    }
+
+    .abonnement-toggle-btn:last-child {
+      border-radius: 0 var(--radius) var(--radius) 0;
+      border-left: none;
+    }
+
+    .abonnement-toggle-btn.is-active {
+      background: var(--color-primary);
+      color: var(--color-white);
+      border-color: var(--color-primary);
+    }
+
+    .abonnement-toggle-btn:hover:not(.is-active) {
+      background: var(--color-bg-cream);
+      color: var(--color-text);
+    }
+
+    .abonnement-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      background: var(--color-white);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .pricing-card:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    .pricing-card.pricing-featured {
+      border-color: var(--color-primary);
+      transform: scale(1.03);
+      box-shadow: 0 8px 32px rgba(61,90,74,0.12);
+    }
+
+    .pricing-card.pricing-highlight {
+      border-color: var(--color-primary);
+      box-shadow: 0 8px 24px rgba(61,90,74,0.15);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .pricing-badge-pop {
+      background: var(--color-primary);
+      color: var(--color-white);
+    }
+
+    .pricing-badge-value {
+      background: var(--color-primary);
+      color: var(--color-white);
+    }
+
+    .pricing-badge-reduction {
+      top: 12px;
+      left: 12px;
+      right: auto;
+      background: var(--color-muted);
+      color: var(--color-white);
+    }
+
+    .pricing-badge.pop-right {
+      left: auto;
+      right: 12px;
+    }
+
+    .pricing-card h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-dark);
+      margin-bottom: 4px;
+    }
+
+    .pricing-desc {
+      font-size: 0.875rem;
+      color: var(--color-muted);
+      margin-bottom: 24px;
+    }
+
+    .pricing-original {
+      font-size: 1rem;
+      color: var(--color-muted);
+      text-decoration: line-through;
+      margin-bottom: 4px;
+    }
+
+    .pricing-final {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 4px;
+    }
+
+    .pricing-per-pack {
+      font-size: 0.8125rem;
+      color: var(--color-muted);
+      margin-bottom: 24px;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 24px;
+      flex: 1;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 0.9375rem;
+      color: var(--color-text);
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      background: var(--color-primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .pricing-ctas {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pricing-ctas .btn {
+      width: 100%;
+      text-align: center;
+      min-height: 48px;
+    }
+
+    @media (max-width: 900px) {
+      .abonnement-grid {
+        grid-template-columns: 1fr;
+      }
+      .pricing-card.pricing-featured {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .abonnement-grid {
+        display: flex;
+        flex-direction: column;
+      }
+      .pricing-card[data-formula-card="trimestriel"] {
+        order: -1;
+      }
+    }
+
+    /* FAQ */
+    .faq {
+      padding: 80px var(--space);
+      background: var(--color-bg-cream);
+    }
+
+    .faq-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .faq-inner .section-header { margin-bottom: 40px; }
+
+    .faq-item {
+      background: var(--color-white);
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .faq-question {
+      padding: 20px 52px 20px 24px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--color-dark);
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      transition: background 0.2s ease;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .faq-question:hover {
+      background: var(--color-bg);
+    }
+
+    .faq-question::after {
+      content: '+';
+      position: absolute;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--color-muted);
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.is-open .faq-question::after {
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    .faq-answer {
+      padding: 0 24px;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--color-text);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .faq-item.is-open .faq-answer {
+      max-height: 500px;
+    }
+
+    @media (max-width: 768px) {
+      .faq-item.is-open .faq-answer {
+        max-height: 800px;
+      }
+      .faq-question {
+        padding: 18px 48px 18px 20px;
+        min-height: 48px;
+      }
+    }
+
+    .faq-answer-inner {
+      padding: 0 0 20px;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 80px var(--space);
+      background: var(--color-bg);
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      color: var(--color-dark);
+      margin-bottom: 16px;
+    }
+
+    .cta-section p {
+      color: var(--color-muted);
+      margin-bottom: 24px;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--color-dark);
+      color: var(--color-white);
+      padding: 48px var(--space) 24px;
+    }
+
+    .footer-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .footer .logo {
+      color: var(--color-white);
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+
+    .footer .logo img {
+      height: 56px;
+      width: auto;
+      display: block;
+    }
+
+    .footer p {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      margin-bottom: 24px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .footer-links a {
+      font-size: 0.875rem;
+      opacity: 0.9;
+    }
+
+    .footer-links a:hover { opacity: 1; }
+
+    .footer-copy {
+      font-size: 0.8125rem;
+      opacity: 0.6;
+    }
+
+    /* Bouton WhatsApp flottant */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      background: #25D366;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+      z-index: 99;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 24px rgba(37, 211, 102, 0.6);
+    }
+
+    .whatsapp-float .whatsapp-float-text {
+      display: none;
+      margin-left: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    @media (min-width: 769px) {
+      .whatsapp-float {
+        width: auto;
+        height: auto;
+        padding: 14px 20px;
+        border-radius: 50px;
+      }
+      .whatsapp-float .whatsapp-float-text {
+        display: inline;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero { min-height: 90vh; }
+      .categories-grid { gap: 24px; }
+    }
+
+    @media (max-width: 768px) {
+      .nav { display: none; }
+      body { padding-top: 80px; }
+      .header-inner { min-height: 72px; }
+      .logo img { height: 64px; }
+      .header-utils { gap: 12px; }
+      .hero { padding: 32px var(--space) 48px; }
+      .hero-decor { display: none; }
+      .categories-grid { gap: 20px; }
+      .category-circle { width: 120px; height: 120px; }
+    }
+
+    @media (max-width: 480px) {
+      .announcement { font-size: 0.75rem; padding: 8px 16px; }
+      body { padding-top: 70px; }
+      .header-inner { min-height: 64px; padding: 8px var(--space); }
+      .logo img { height: 56px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="announcement">
+      Pack Beauté & Jeunesse à partir de 379 DH · Livraison partout au Maroc 🇲🇦
+    </div>
+    <header class="header">
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <img src="image/logo without background.png" alt="VITAMAX" loading="lazy">
+      </a>
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="#abonnement" class="nav-link">Abonnement</a>
+      </nav>
+    </div>
+  </header>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-decor hero-decor-1" aria-hidden="true">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 5 Q65 25 50 50 Q35 75 20 50 Q35 25 50 5"/>
+        <path d="M50 20 Q70 35 55 60 M50 35 Q60 45 55 55"/>
+      </svg>
+    </div>
+    <div class="hero-decor hero-decor-2" aria-hidden="true">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 5 Q65 25 50 50 Q35 75 20 50 Q35 25 50 5"/>
+      </svg>
+    </div>
+    <div class="hero-content">
+      <h1>Routine beauté naturelle au quotidien</h1>
+      <p class="hero-subtitle">Des produits qui exploitent la puissance du 100% naturel</p>
+      <p class="hero-price">379 DH <span class="hero-price-unit">/ pack 15 jours</span></p>
+      <a href="#abonnement" class="btn btn-primary">Commander le pack</a>
+      <p class="hero-delivery">Livraison en 2-5 jours partout au Maroc</p>
+      <div class="hero-trust-badges">
+        <span class="trust-badge"><span class="trust-icon">🚚</span> Livraison rapide</span>
+        <span class="trust-badge"><span class="trust-icon">🔒</span> Paiement sécurisé</span>
+        <span class="trust-badge"><span class="trust-icon">✓</span> Satisfait ou remboursé</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contenu du pack -->
+  <section class="categories" id="contenu">
+    <div class="categories-inner">
+      <div class="section-header">
+        <p class="section-label">Pack Beauté & Jeunesse</p>
+        <h2 class="section-title">Ce que contient votre pack</h2>
+      </div>
+      <div class="categories-grid">
+        <a href="#commander" class="category-card">
+          <div class="category-circle">
+            <img src="image/collagen marin bottle.png" alt="Collagène marin" loading="lazy">
+          </div>
+          <h3>Collagène marin</h3>
+          <span class="category-count">Jeunesse & fermeté</span>
+        </a>
+        <a href="#commander" class="category-card">
+          <div class="category-circle">
+            <img src="image/multivitamine.png" alt="Multivitamines" loading="lazy">
+          </div>
+          <h3>Multivitamines</h3>
+          <span class="category-count">Éclat & luminosité</span>
+        </a>
+        <a href="#commander" class="category-card">
+          <div class="category-circle">
+            <img src="image/creme retinole.png" alt="Soin peau" loading="lazy">
+          </div>
+          <h3>Soin hydratation</h3>
+          <span class="category-count">Peau & ongles</span>
+        </a>
+        <a href="#commander" class="category-card">
+          <div class="category-circle">
+            <img src="image/new image pack.png" alt="Pack complet" loading="lazy">
+          </div>
+          <h3>Pack complet</h3>
+          <span class="category-count">Tous les actifs</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Avantages des produits -->
+  <section class="benefits" id="avantages">
+    <div class="benefits-inner">
+      <div class="section-header">
+        <p class="section-label">Actifs & bienfaits</p>
+        <h2 class="section-title">Les atouts de chaque actif</h2>
+      </div>
+      <p class="benefits-intro">Chaque produit du pack apporte des bénéfices ciblés pour une routine beauté complète. Découvrez ce que chaque actif fait pour votre peau.</p>
+
+      <article class="benefit-card">
+        <div class="benefit-image">
+          <img src="image/collagen marin bottle.png" alt="Collagène marin VITAMAX" loading="lazy">
+        </div>
+        <div class="benefit-content">
+          <p class="benefit-subtitle">Complément alimentaire</p>
+          <h3>Collagène marin</h3>
+          <ul class="benefit-list">
+            <li>Contribue à la fermeté et à l'élasticité de la peau</li>
+            <li>Favorise la santé des cheveux, de la peau et des ongles</li>
+            <li>Aide à maintenir la santé des articulations</li>
+            <li>Soutien à la jeunesse cutanée</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="benefit-card">
+        <div class="benefit-image">
+          <img src="image/multivitamine.png" alt="Multivitamines VITAMAX" loading="lazy">
+        </div>
+        <div class="benefit-content">
+          <p class="benefit-subtitle">Vitamines du groupe B</p>
+          <h3>Multivitamines</h3>
+          <ul class="benefit-list">
+            <li>Jouent un rôle dans la production d'énergie et la réduction de la fatigue</li>
+            <li>Antioxydants pour protéger la peau du stress oxydatif</li>
+            <li>Contribuent à un teint lumineux et unifié</li>
+            <li>Nourrissent la peau de l'intérieur</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="benefit-card">
+        <div class="benefit-image">
+          <img src="image/creme retinole.png" alt="Crème Rétinol VITAMAX" loading="lazy">
+        </div>
+        <div class="benefit-content">
+          <p class="benefit-subtitle">Soin topique</p>
+          <h3>Crème Rétinol & Hydratation</h3>
+          <ul class="benefit-list">
+            <li>Hydratation profonde et renforcement de la barrière cutanée</li>
+            <li>Actifs qui aident à atténuer les signes de l'âge</li>
+            <li>Peau plus souple, fraîche et confortable</li>
+            <li>Texture légère, facile à intégrer dans votre routine</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Témoignages clients -->
+  <section class="testimonials" id="temoignages">
+    <div class="testimonials-inner">
+      <div class="section-header">
+        <p class="section-label">Ce que disent nos clientes</p>
+        <h2 class="section-title">Avis clients VITAMAX</h2>
+      </div>
+      <p class="testimonials-intro">Des milliers de femmes marocaines nous font confiance. Découvrez leurs retours authentiques sur le Pack Beauté & Jeunesse.</p>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">« J'ai vu une vraie différence sur ma peau en un mois. Plus d'éclat, moins de taches. Je recommande à 100% ! »</p>
+          <p class="testimonial-author">— Fatima Z., Casablanca</p>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">« Ma peau est plus hydratée et mes ongles ont jamais été aussi solides. Le pack complet vaut vraiment le coup. »</p>
+          <p class="testimonial-author">— Nadia M., Rabat</p>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">« Livraison rapide, produit de qualité. Ma routine beauté est maintenant complète grâce à VITAMAX. »</p>
+          <p class="testimonial-author">— Khadija T., Marrakech</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Avant / Après -->
+  <section class="before-after" id="avant-apres">
+    <div class="before-after-inner">
+      <div class="section-header">
+        <p class="section-label">Preuve des résultats</p>
+        <h2 class="section-title">Résultats visibles et prouvés</h2>
+      </div>
+      <p class="before-after-intro">Découvrez la transformation réelle de nos clientes. Grâce au pack VITAMAX (collagène marin, multivitamines et actifs anti-âge), la peau retrouve son éclat, son hydratation et sa fermeté en quelques semaines. Ces résultats sont ceux de vraies utilisatrices — sans retouche, sans filtres.</p>
+      <div class="before-after-slider-wrap">
+        <div class="before-after-slider" id="beforeAfterSlider">
+          <div class="ba-layer ba-before">
+            <img src="image/before after.png" alt="Avant - Résultats VITAMAX" loading="lazy">
+          </div>
+          <div class="ba-layer ba-after" id="baAfter">
+            <img src="image/before after.png" alt="Après - Résultats VITAMAX" loading="lazy">
+          </div>
+          <div class="ba-handle" id="baHandle" aria-label="Glisser pour comparer">
+            <span class="ba-handle-line"></span>
+            <span class="ba-handle-circle">⟷</span>
+            <span class="ba-handle-line"></span>
+          </div>
+        </div>
+        <div class="before-after-labels">
+          <span>Avant</span>
+          <span>Après</span>
+        </div>
+      </div>
+      <p class="before-after-proof">La plupart des utilisatrices constatent une amélioration visible dès 3 à 4 semaines d'utilisation régulière.</p>
+    </div>
+  </section>
+
+  <!-- Brand / Collection -->
+  <section class="collection" id="collection">
+    <div class="collection-inner">
+      <div class="collection-content">
+        <p class="section-label">Meilleure collection 2025</p>
+        <h2>Découvrez l'excellence en beauté naturelle</h2>
+        <p>VITAMAX combine collagène, vitamines et antioxydants pour nourrir votre peau de l'intérieur. Des formules pensées pour les femmes marocaines : éclat visible, hydratation profonde et jeunesse cutanée.</p>
+        <a href="https://wa.me/212664341918?text=Bonjour%2C%20je%20souhaite%20commander%20le%20Pack%20Beaut%C3%A9%20%26%20Jeunesse" class="btn btn-dark" target="_blank" rel="noopener">Commander le pack</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pack CTA -->
+  <section class="products pack-cta-section" id="commander">
+    <div class="products-inner">
+      <div class="section-header">
+        <p class="section-label">Offre exclusive</p>
+        <h2 class="section-title">Pack Beauté & Jeunesse</h2>
+      </div>
+      <p class="products-tagline">Collagène, multivitamines et actifs hydratants réunis dans un pack complet. Paiement à la livraison partout au Maroc.</p>
+      <div class="pack-cta-block">
+        <div class="pack-cta-image">
+          <img src="image/new image pack.png" alt="Pack Beauté & Jeunesse VITAMAX" loading="lazy">
+        </div>
+        <div class="pack-cta-content">
+          <h3>Commander votre pack</h3>
+          <p>Un pack tout-en-un pour révéler l'éclat de votre peau. Éclat, hydratation et jeunesse au naturel.</p>
+          <a href="https://wa.me/212664341918?text=Bonjour%2C%20je%20souhaite%20commander%20le%20Pack%20Beaut%C3%A9%20%26%20Jeunesse" class="btn btn-primary" target="_blank" rel="noopener">Commander sur WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Abonnement -->
+  <section class="abonnement" id="abonnement">
+    <div class="abonnement-inner">
+      <div class="section-header">
+        <p class="section-label">Formules disponibles</p>
+        <h2 class="section-title">Choisissez votre formule</h2>
+      </div>
+      <div class="abonnement-toggle" role="tablist" aria-label="Sélectionner Mensuel ou Trimestriel">
+        <button type="button" class="abonnement-toggle-btn is-active" data-formula="mensuel" aria-selected="true">Mensuel</button>
+        <button type="button" class="abonnement-toggle-btn" data-formula="trimestriel" aria-selected="false">Trimestriel</button>
+      </div>
+      <div class="abonnement-grid">
+        <!-- Découverte -->
+        <div class="pricing-card">
+          <h3>Découverte</h3>
+          <p class="pricing-desc">1 pack · 15 jours · Achat unique</p>
+          <p class="pricing-original">379 DH</p>
+          <p class="pricing-final">379 DH</p>
+          <p class="pricing-per-pack">soit 379 DH / pack 15j</p>
+          <ul class="pricing-features">
+            <li>1 pack complet (Collagène + Multivitamines + Crème Rétinol)</li>
+            <li>15 jours d'utilisation</li>
+            <li>Paiement à la livraison</li>
+          </ul>
+          <div class="pricing-ctas">
+            <!-- SHOPIFY: remplacer VARIANT_ID_DECOUVERTE par le Variant ID "1 pack" -->
+            <a href="/cart/add?id=VARIANT_ID_DECOUVERTE&quantity=1" class="btn btn-primary">Ajouter au panier</a>
+            <a href="https://wa.me/212664341918?text=Bonjour%2C%20je%20souhaite%20commander%201%20Pack%20Beaut%C3%A9%20%26%20Jeunesse%20VITAMAX%20(15%20jours)%20-%20379%20DH.%20Paiement%20%C3%A0%20la%20livraison." class="btn btn-outline" target="_blank" rel="noopener">Commander sur WhatsApp</a>
+          </div>
+        </div>
+        <!-- Mensuel -->
+        <div class="pricing-card pricing-highlight" data-formula-card="mensuel">
+          <span class="pricing-badge pricing-badge-reduction">-10%</span>
+          <span class="pricing-badge pricing-badge-pop pop-right">Populaire</span>
+          <h3>Mensuel</h3>
+          <p class="pricing-desc">2 packs · 30 jours · Livraison / mois</p>
+          <p class="pricing-original">758 DH</p>
+          <p class="pricing-final">679 DH</p>
+          <p class="pricing-per-pack">soit 339 DH / pack 15j</p>
+          <ul class="pricing-features">
+            <li>2 packs complets</li>
+            <li>30 jours d'utilisation</li>
+            <li>Économisez 79 DH (-10%)</li>
+            <li>Paiement à la livraison</li>
+          </ul>
+          <div class="pricing-ctas">
+            <!-- SHOPIFY: remplacer VARIANT_ID_MENSUEL par le Variant ID "2 packs" -->
+            <a href="/cart/add?id=VARIANT_ID_MENSUEL&quantity=2" class="btn btn-primary">Ajouter au panier</a>
+            <a href="https://wa.me/212664341918?text=Bonjour%2C%20je%20souhaite%20commander%20la%20formule%20Mensuelle%20VITAMAX%20(2%20packs%20%2F%2030%20jours)%20-%20679%20DH.%20Paiement%20%C3%A0%20la%20livraison." class="btn btn-outline" target="_blank" rel="noopener">Commander sur WhatsApp</a>
+          </div>
+        </div>
+        <!-- Trimestriel -->
+        <div class="pricing-card pricing-featured" data-formula-card="trimestriel">
+          <span class="pricing-badge pricing-badge-reduction">-20%</span>
+          <span class="pricing-badge pricing-badge-value pop-right">Meilleure valeur</span>
+          <h3>Trimestriel</h3>
+          <p class="pricing-desc">6 packs · 90 jours · Livraison / 3 mois</p>
+          <p class="pricing-original">2 274 DH</p>
+          <p class="pricing-final">1 819 DH</p>
+          <p class="pricing-per-pack">soit 303 DH / pack 15j</p>
+          <ul class="pricing-features">
+            <li>6 packs complets</li>
+            <li>90 jours d'utilisation</li>
+            <li>Économisez 455 DH (-20%)</li>
+            <li>Paiement à la livraison</li>
+          </ul>
+          <div class="pricing-ctas">
+            <!-- SHOPIFY: remplacer VARIANT_ID_TRIMESTRIEL par le Variant ID "6 packs" -->
+            <a href="/cart/add?id=VARIANT_ID_TRIMESTRIEL&quantity=6" class="btn btn-primary">Ajouter au panier</a>
+            <a href="https://wa.me/212664341918?text=Bonjour%2C%20je%20souhaite%20commander%20la%20formule%20Trimestrielle%20VITAMAX%20(6%20packs%20%2F%2090%20jours)%20-%201819%20DH.%20Paiement%20%C3%A0%20la%20livraison." class="btn btn-outline" target="_blank" rel="noopener">Commander sur WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="faq-inner">
+      <div class="section-header">
+        <p class="section-label">Questions fréquentes</p>
+        <h2 class="section-title">Tout ce que vous devez savoir</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">En combien de temps vois-je des résultats sur ma peau ?</div>
+          <div class="faq-answer"><div class="faq-answer-inner">La plupart des utilisatrices constatent une amélioration visible (éclat, hydratation) dès 3 à 4 semaines d'utilisation régulière. Les effets sur la fermeté et les rides peuvent prendre un peu plus de temps.</div></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">Livrez-vous partout au Maroc ?</div>
+          <div class="faq-answer"><div class="faq-answer-inner">Oui, nous livrons dans tout le Maroc. Livraison rapide et discrète à votre domicile.</div></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">Comment puis-je payer ?</div>
+          <div class="faq-answer"><div class="faq-answer-inner">Paiement à la livraison uniquement. Vous payez en espèces à la réception de votre colis, en toute sécurité.</div></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">Comment commander ?</div>
+          <div class="faq-answer"><div class="faq-answer-inner">Cliquez sur « Commander le pack sur WhatsApp ». Notre équipe vous répond rapidement pour finaliser votre commande du Pack Beauté & Jeunesse.</div></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">Quel est le délai de livraison ?</div>
+          <div class="faq-answer"><div class="faq-answer-inner">La livraison varie selon votre ville. En général, comptez 2 à 5 jours ouvrés pour les grandes villes (Casablanca, Rabat, Marrakech, Fès) et 5 à 7 jours pour les autres régions.</div></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">Comment utiliser les produits VITAMAX ?</div>
+          <div class="faq-answer"><div class="faq-answer-inner">Le pack comporte une notice d'utilisation pour chaque complément. En général, les actifs se prennent quotidiennement (le matin ou selon les recommandations). Notre équipe vous donnera tous les détails lors de votre commande.</div></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">Les produits sont-ils adaptés aux peaux sensibles ?</div>
+          <div class="faq-answer"><div class="faq-answer-inner">Oui, nos formules sont pensées pour être douces et adaptées à tous les types de peau. Si vous avez des allergies ou des sensibilités particulières, n'hésitez pas à nous en informer avant de commander.</div></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">Qu'est-ce que le Pack Beauté & Jeunesse ?</div>
+          <div class="faq-answer"><div class="faq-answer-inner">Le Pack Beauté & Jeunesse regroupe collagène marin, multivitamines et actifs hydratants pour une routine beauté complète. Tous les actifs complémentaires réunis pour un effet optimal sur l'éclat, l'hydratation et la jeunesse de la peau.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>Prêt à révéler votre éclat ?</h2>
+    <p>Livraison rapide au Maroc · Paiement à la livraison</p>
+    <a href="https://wa.me/212664341918?text=Bonjour%2C%20je%20souhaite%20commander%20le%20Pack%20Beaut%C3%A9%20%26%20Jeunesse" class="btn btn-primary" target="_blank" rel="noopener">Commander le pack sur WhatsApp</a>
+  </section>
+
+  <!-- Bouton WhatsApp flottant -->
+  <a href="https://wa.me/212664341918?text=Bonjour%2C%20je%20souhaite%20commander%20le%20Pack%20Beaut%C3%A9%20%26%20Jeunesse" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Contacter VITAMAX sur WhatsApp">
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <span class="whatsapp-float-text">WhatsApp</span>
+  </a>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <a href="#" class="logo"><img src="image/logo without background.png" alt="VITAMAX" loading="lazy"></a>
+      <p>Compléments beauté premium pour les femmes marocaines. Éclat, hydratation et jeunesse au naturel.</p>
+      <div class="footer-links">
+        <a href="#abonnement">Abonnement</a>
+        <a href="#commander">Commander le pack</a>
+        <a href="#temoignages">Avis clients</a>
+        <a href="#avant-apres">Résultats</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://wa.me/212664341918?text=Bonjour%2C%20je%20souhaite%20commander%20le%20Pack%20Beaut%C3%A9%20%26%20Jeunesse" target="_blank" rel="noopener">Commander</a>
+      </div>
+      <p class="footer-copy">© 2025 VITAMAX. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script>
+    function initFaq() {
+      document.querySelectorAll('.faq-question').forEach(function(q) {
+        q.addEventListener('click', function() {
+          var item = this.closest('.faq-item');
+          var answer = item.querySelector('.faq-answer');
+          var wasOpen = item.classList.contains('is-open');
+          document.querySelectorAll('.faq-item').forEach(function(i) {
+            i.classList.remove('is-open');
+            i.querySelector('.faq-answer').style.maxHeight = null;
+            i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+          });
+          if (!wasOpen) {
+            item.classList.add('is-open');
+            q.setAttribute('aria-expanded', 'true');
+            answer.style.maxHeight = answer.scrollHeight + 24 + 'px';
+          }
+        });
+        q.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.click();
+          }
+        });
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initFaq);
+    } else {
+      initFaq();
+    }
+
+    (function() {
+      var topBar = document.querySelector('.top-bar');
+      var lastScroll = 0;
+      if (!topBar) return;
+      function onScroll() {
+        var scroll = window.scrollY || document.documentElement.scrollTop;
+        if (scroll > lastScroll && scroll > 80) {
+          topBar.classList.add('top-bar-hidden');
+        } else {
+          topBar.classList.remove('top-bar-hidden');
+        }
+        lastScroll = scroll;
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+
+    (function initAbonnementToggle() {
+      var btns = document.querySelectorAll('.abonnement-toggle-btn');
+      var cards = document.querySelectorAll('[data-formula-card]');
+      btns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var formula = this.getAttribute('data-formula');
+          btns.forEach(function(b) {
+            b.classList.toggle('is-active', b.getAttribute('data-formula') === formula);
+            b.setAttribute('aria-selected', b.getAttribute('data-formula') === formula);
+          });
+          cards.forEach(function(c) {
+            c.classList.toggle('pricing-highlight', c.getAttribute('data-formula-card') === formula);
+            c.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          });
+        });
+      });
+    })();
+
+    (function initBeforeAfterSlider() {
+      var slider = document.getElementById('beforeAfterSlider');
+      var handle = document.getElementById('baHandle');
+      var after = document.getElementById('baAfter');
+      if (!slider || !handle || !after) return;
+
+      var position = 50;
+      var isDragging = false;
+
+      function updatePosition(percent) {
+        position = Math.max(0, Math.min(100, percent));
+        after.style.clipPath = 'inset(0 0 0 ' + position + '%)';
+        handle.style.left = position + '%';
+      }
+
+      function getPercent(e) {
+        var rect = slider.getBoundingClientRect();
+        var x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+        return (x / rect.width) * 100;
+      }
+
+      function onMove(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+        updatePosition(getPercent(e));
+      }
+
+      function onEnd() {
+        isDragging = false;
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onEnd);
+        document.removeEventListener('touchmove', onMove, { passive: false });
+        document.removeEventListener('touchend', onEnd);
+      }
+
+      handle.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        isDragging = true;
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onEnd);
+      });
+
+      handle.addEventListener('touchstart', function(e) {
+        isDragging = true;
+        document.addEventListener('touchmove', onMove, { passive: false });
+        document.addEventListener('touchend', onEnd);
+      });
+
+      slider.addEventListener('click', function(e) {
+        if (e.target === handle || handle.contains(e.target)) return;
+        updatePosition(getPercent(e));
+      });
+
+      updatePosition(50);
+    })();
+  </script>
+</body>
+</html>
