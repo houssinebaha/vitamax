@@ -134,7 +134,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .nav-toggle {
-  display: block;
+  display: none;
   width: 44px;
   height: 44px;
   background: transparent;
