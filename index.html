@@ -33,18 +33,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --color-dark: #2c2c2c;
-      --color-text: #4a4a4a;
-      --color-muted: #7a7a7a;
-      --color-primary: #3d5a4a;
-      --color-primary-hover: #4a6b58;
-      --color-bg: #faf9f7;
-      --color-bg-cream: #f5f3ef;
+      --color-dark: #1f2920;
+      --color-text: #3d4a3e;
+      --color-muted: #6b7a6d;
+      --color-primary: #2d4a38;
+      --color-primary-hover: #3a5c47;
+      --color-bg: #fafaf8;
+      --color-bg-cream: #f3f2ee;
       --color-white: #ffffff;
-      --color-border: rgba(0,0,0,0.08);
-      --container: 1200px;
+      --color-border: rgba(45,74,56,0.1);
+      --color-shadow: rgba(45,74,56,0.06);
+      --container: 1120px;
       --space: 24px;
-      --radius: 4px;
+      --radius: 12px;
+      --radius-sm: 8px;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -52,10 +54,11 @@
     body {
       font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 16px;
-      line-height: 1.6;
+      line-height: 1.65;
       color: var(--color-text);
       background: var(--color-bg);
       padding-top: 80px;
+      -webkit-font-smoothing: antialiased;
     }
 
     a { text-decoration: none; color: inherit; }
@@ -76,18 +79,21 @@
 
     .announcement {
       background: var(--color-dark);
-      color: var(--color-white);
+      color: rgba(255,255,255,0.95);
       text-align: center;
-      padding: 10px 20px;
+      padding: 12px 20px;
       font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
     }
 
     .announcement a { text-decoration: underline; }
 
     /* Header */
     .header {
-      background: var(--color-white);
+      background: rgba(255,255,255,0.98);
       border-bottom: 1px solid var(--color-border);
+      backdrop-filter: blur(8px);
     }
 
     .header-inner {
@@ -120,12 +126,22 @@
     }
 
     .nav-link {
-      font-size: 0.9375rem;
-      font-weight: 500;
-      color: var(--color-text);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-white);
+      background: var(--color-primary);
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      transition: all 0.25s ease;
+      letter-spacing: 0.02em;
     }
 
-    .nav-link:hover { color: var(--color-primary); }
+    .nav-link:hover {
+      background: var(--color-primary-hover);
+      color: var(--color-white);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px var(--color-shadow);
+    }
 
     .header-utils {
       display: flex;
@@ -163,7 +179,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.75) 100%);
+      background: linear-gradient(160deg, rgba(255,255,255,0.94) 0%, rgba(250,250,248,0.88) 50%, rgba(255,255,255,0.82) 100%);
       z-index: 0;
     }
 
@@ -194,11 +210,12 @@
 
     .hero-content h1 {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-size: clamp(2.1rem, 4.2vw, 3rem);
       font-weight: 600;
       color: var(--color-dark);
-      line-height: 1.2;
-      margin-bottom: 16px;
+      line-height: 1.18;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
     }
 
     .hero-subtitle {
@@ -227,22 +244,26 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 14px 32px;
+      padding: 16px 36px;
       font-size: 0.9375rem;
       font-weight: 600;
-      border-radius: var(--radius);
+      border-radius: var(--radius-sm);
       cursor: pointer;
-      transition: background 0.2s ease, color 0.2s ease;
+      transition: all 0.25s ease;
       border: none;
+      letter-spacing: 0.03em;
     }
 
     .btn-primary {
       background: var(--color-primary);
       color: var(--color-white);
+      box-shadow: 0 4px 14px var(--color-shadow);
     }
 
     .btn-primary:hover {
       background: var(--color-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px var(--color-shadow);
     }
 
     .btn-outline {
@@ -252,7 +273,8 @@
     }
 
     .btn-outline:hover {
-      background: var(--color-bg);
+      background: var(--color-bg-cream);
+      transform: translateY(-1px);
     }
 
     .hero-delivery {
@@ -299,9 +321,10 @@
 
     .section-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-size: clamp(1.6rem, 3.2vw, 2.1rem);
       font-weight: 600;
       color: var(--color-dark);
+      letter-spacing: -0.02em;
     }
 
     /* Categories */
@@ -339,9 +362,15 @@
       height: 160px;
       border-radius: 50%;
       overflow: hidden;
-      background: var(--color-bg);
+      background: var(--color-bg-cream);
       border: 1px solid var(--color-border);
       margin-bottom: 16px;
+      box-shadow: 0 8px 24px var(--color-shadow);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .category-card:hover .category-circle {
+      box-shadow: 0 12px 32px var(--color-shadow);
     }
 
     .category-circle img {
@@ -365,7 +394,7 @@
     /* Avantages produits */
     .benefits {
       padding: 80px var(--space);
-      background: linear-gradient(180deg, var(--color-white) 0%, var(--color-bg) 100%);
+      background: var(--color-bg-cream);
     }
 
     .benefits-inner {
@@ -376,41 +405,69 @@
     .benefits-intro {
       font-size: 1.0625rem;
       color: var(--color-text);
-      max-width: 600px;
-      margin: 0 auto 56px;
+      max-width: 560px;
+      margin: 0 auto 48px;
       text-align: center;
       line-height: 1.7;
     }
 
-    .benefit-card {
+    .benefits-grid {
       display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 48px;
-      align-items: center;
-      padding: 48px 0;
-      border-bottom: 1px solid var(--color-border);
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      align-items: stretch;
     }
 
-    .benefit-card:last-child { border-bottom: none; }
-
-    .benefit-card:nth-child(even) {
-      direction: rtl;
+    .benefit-card {
+      background: var(--color-white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 4px 24px var(--color-shadow), 0 0 0 1px var(--color-border);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .benefit-card:nth-child(even) > * {
-      direction: ltr;
+    .benefit-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px var(--color-shadow), 0 0 0 1px var(--color-border);
+    }
+
+    .benefit-card.benefit-featured {
+      border: 2px solid var(--color-primary);
+      box-shadow: 0 8px 32px var(--color-shadow), 0 0 0 1px var(--color-primary);
     }
 
     .benefit-image {
-      border-radius: var(--radius);
+      aspect-ratio: 1;
       overflow: hidden;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      background: var(--color-bg);
     }
 
     .benefit-image img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: contain;
+      padding: 24px;
       display: block;
+    }
+
+    .benefit-content {
+      padding: 28px 24px 32px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 320px;
+    }
+
+    .benefit-content .benefit-subtitle {
+      font-size: 0.75rem;
+      color: var(--color-primary);
+      font-weight: 600;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
 
     .benefit-content h3 {
@@ -418,16 +475,17 @@
       font-size: 1.5rem;
       font-weight: 600;
       color: var(--color-dark);
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      line-height: 1.25;
     }
 
-    .benefit-content .benefit-subtitle {
-      font-size: 0.875rem;
-      color: var(--color-primary);
-      font-weight: 600;
+    .benefit-desc {
+      font-size: 0.9375rem;
+      color: var(--color-muted);
+      line-height: 1.5;
       margin-bottom: 20px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      flex: 1;
+      min-height: 2.85em;
     }
 
     .benefit-list {
@@ -436,39 +494,41 @@
 
     .benefit-list li {
       display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 10px 0;
-      font-size: 1rem;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      font-size: 0.9375rem;
       color: var(--color-text);
-      line-height: 1.5;
+      line-height: 1.4;
     }
 
     .benefit-list li::before {
       content: '✓';
       flex-shrink: 0;
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       background: var(--color-primary);
       color: white;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 700;
     }
 
-    @media (max-width: 768px) {
-      .benefit-card {
+    @media (max-width: 900px) {
+      .benefits-grid {
         grid-template-columns: 1fr;
-        gap: 24px;
-        padding: 32px 0;
-        direction: ltr;
+        max-width: 400px;
+        margin: 0 auto;
       }
-      .benefit-card:nth-child(even) { direction: ltr; }
-      .benefit-card:nth-child(even) > * { direction: ltr; }
-      .benefit-image { max-width: 200px; margin: 0 auto; }
+      .benefit-content {
+        min-height: 0;
+      }
+      .benefit-desc {
+        min-height: 0;
+      }
     }
 
     /* Brand / Collection */
@@ -503,10 +563,13 @@
     .btn-dark {
       background: var(--color-dark);
       color: var(--color-white);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
     }
 
     .btn-dark:hover {
-      background: #3a3a3a;
+      background: #2a332b;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.18);
     }
 
     /* Featured Products */
@@ -613,12 +676,12 @@
       align-items: center;
       justify-content: center;
       gap: 64px;
-      max-width: 700px;
+      max-width: 800px;
       margin: 0 auto;
     }
 
     .pack-cta-image {
-      flex: 0 0 280px;
+      flex: 0 0 380px;
     }
 
     .pack-cta-image img {
@@ -644,7 +707,7 @@
         flex-direction: column;
         gap: 32px;
       }
-      .pack-cta-image { flex: none; max-width: 240px; }
+      .pack-cta-image { flex: none; max-width: 320px; }
     }
 
     /* Témoignages */
@@ -674,11 +737,17 @@
     }
 
     .testimonial-card {
-      background: var(--color-bg);
+      background: var(--color-white);
       border-radius: var(--radius);
-      padding: 32px 24px;
+      padding: 36px 28px;
       text-align: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      box-shadow: 0 4px 20px var(--color-shadow), 0 0 0 1px var(--color-border);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+      box-shadow: 0 12px 36px var(--color-shadow), 0 0 0 1px var(--color-border);
+      transform: translateY(-2px);
     }
 
     .testimonial-stars {
@@ -742,7 +811,7 @@
       position: relative;
       border-radius: var(--radius);
       overflow: hidden;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      box-shadow: 0 16px 48px var(--color-shadow), 0 0 0 1px var(--color-border);
       margin-bottom: 24px;
     }
 
@@ -846,6 +915,15 @@
       margin: 0 auto;
     }
 
+    .abonnement-intro {
+      font-size: 1.0625rem;
+      line-height: 1.7;
+      color: var(--color-text);
+      max-width: 640px;
+      margin: 0 auto 40px;
+      text-align: center;
+    }
+
     .abonnement-toggle {
       display: flex;
       justify-content: center;
@@ -854,14 +932,14 @@
     }
 
     .abonnement-toggle-btn {
-      padding: 12px 24px;
+      padding: 12px 28px;
       font-size: 0.9375rem;
       font-weight: 600;
       color: var(--color-muted);
       background: var(--color-bg);
       border: 1px solid var(--color-border);
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
     }
 
     .abonnement-toggle-btn:first-child {
@@ -893,28 +971,35 @@
 
     .pricing-card {
       background: var(--color-white);
-      border: 2px solid var(--color-border);
+      border: 1px solid var(--color-border);
       border-radius: var(--radius);
-      padding: 32px 24px;
+      padding: 36px 28px;
       position: relative;
       display: flex;
       flex-direction: column;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px var(--color-shadow);
     }
 
     .pricing-card:hover {
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      box-shadow: 0 12px 36px var(--color-shadow);
+      transform: translateY(-2px);
     }
 
     .pricing-card.pricing-featured {
       border-color: var(--color-primary);
-      transform: scale(1.03);
-      box-shadow: 0 8px 32px rgba(61,90,74,0.12);
+      border-width: 2px;
+      transform: scale(1.02);
+      box-shadow: 0 12px 40px var(--color-shadow), 0 0 0 1px rgba(45,74,56,0.08);
+    }
+
+    .pricing-card.pricing-featured:hover {
+      transform: scale(1.02) translateY(-2px);
     }
 
     .pricing-card.pricing-highlight {
       border-color: var(--color-primary);
-      box-shadow: 0 8px 24px rgba(61,90,74,0.15);
+      box-shadow: 0 12px 36px var(--color-shadow), 0 0 0 1px rgba(45,74,56,0.1);
     }
 
     .pricing-badge {
@@ -1063,10 +1148,11 @@
 
     .faq-item {
       background: var(--color-white);
-      border-radius: var(--radius);
+      border-radius: var(--radius-sm);
       margin-bottom: 12px;
       overflow: hidden;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      box-shadow: 0 2px 12px var(--color-shadow);
+      border: 1px solid var(--color-border);
     }
 
     .faq-question {
@@ -1133,7 +1219,7 @@
     /* CTA Section */
     .cta-section {
       padding: 80px var(--space);
-      background: var(--color-bg);
+      background: linear-gradient(180deg, var(--color-bg-cream) 0%, var(--color-bg) 100%);
       text-align: center;
     }
 
@@ -1152,8 +1238,8 @@
     /* Footer */
     .footer {
       background: var(--color-dark);
-      color: var(--color-white);
-      padding: 48px var(--space) 24px;
+      color: rgba(255,255,255,0.9);
+      padding: 56px var(--space) 28px;
     }
 
     .footer-inner {
@@ -1202,8 +1288,8 @@
     /* Bouton WhatsApp flottant */
     .whatsapp-float {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: 28px;
+      right: 28px;
       width: 56px;
       height: 56px;
       background: #25D366;
@@ -1212,14 +1298,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+      box-shadow: 0 6px 24px rgba(37, 211, 102, 0.45);
       z-index: 99;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .whatsapp-float:hover {
       transform: scale(1.08);
-      box-shadow: 0 6px 24px rgba(37, 211, 102, 0.6);
+      box-shadow: 0 8px 28px rgba(37, 211, 102, 0.55);
     }
 
     .whatsapp-float .whatsapp-float-text {
@@ -1358,55 +1444,57 @@
         <p class="section-label">Actifs & bienfaits</p>
         <h2 class="section-title">Les atouts de chaque actif</h2>
       </div>
-      <p class="benefits-intro">Chaque produit du pack apporte des bénéfices ciblés pour une routine beauté complète. Découvrez ce que chaque actif fait pour votre peau.</p>
+      <p class="benefits-intro">Trois actifs complémentaires pour une routine beauté complète : à l’intérieur avec le collagène et les vitamines, à l’extérieur avec la crème soin.</p>
 
-      <article class="benefit-card">
-        <div class="benefit-image">
-          <img src="image/collagen marin bottle.png" alt="Collagène marin VITAMAX" loading="lazy">
-        </div>
-        <div class="benefit-content">
-          <p class="benefit-subtitle">Complément alimentaire</p>
-          <h3>Collagène marin</h3>
-          <ul class="benefit-list">
-            <li>Contribue à la fermeté et à l'élasticité de la peau</li>
-            <li>Favorise la santé des cheveux, de la peau et des ongles</li>
-            <li>Aide à maintenir la santé des articulations</li>
-            <li>Soutien à la jeunesse cutanée</li>
-          </ul>
-        </div>
-      </article>
+      <div class="benefits-grid">
+        <article class="benefit-card">
+          <div class="benefit-image">
+            <img src="image/collagen marin bottle.png" alt="Collagène marin VITAMAX" loading="lazy">
+          </div>
+          <div class="benefit-content">
+            <p class="benefit-subtitle">Complément alimentaire</p>
+            <h3>Collagène marin</h3>
+            <p class="benefit-desc">La base du pack pour nourrir la peau de l’intérieur et soutenir sa fermeté.</p>
+            <ul class="benefit-list">
+              <li>Fermeté et élasticité de la peau</li>
+              <li>Cheveux, peau et ongles</li>
+              <li>Jeunesse cutanée</li>
+            </ul>
+          </div>
+        </article>
 
-      <article class="benefit-card">
-        <div class="benefit-image">
-          <img src="image/multivitamine.png" alt="Multivitamines VITAMAX" loading="lazy">
-        </div>
-        <div class="benefit-content">
-          <p class="benefit-subtitle">Vitamines du groupe B</p>
-          <h3>Multivitamines</h3>
-          <ul class="benefit-list">
-            <li>Jouent un rôle dans la production d'énergie et la réduction de la fatigue</li>
-            <li>Antioxydants pour protéger la peau du stress oxydatif</li>
-            <li>Contribuent à un teint lumineux et unifié</li>
-            <li>Nourrissent la peau de l'intérieur</li>
-          </ul>
-        </div>
-      </article>
+        <article class="benefit-card">
+          <div class="benefit-image">
+            <img src="image/multivitamine.png" alt="Multivitamines VITAMAX" loading="lazy">
+          </div>
+          <div class="benefit-content">
+            <p class="benefit-subtitle">Vitamines</p>
+            <h3>Multivitamines</h3>
+            <p class="benefit-desc">Énergie, antioxydants et teint lumineux au quotidien.</p>
+            <ul class="benefit-list">
+              <li>Énergie et réduction de la fatigue</li>
+              <li>Protection antioxydante</li>
+              <li>Teint unifié et lumineux</li>
+            </ul>
+          </div>
+        </article>
 
-      <article class="benefit-card">
-        <div class="benefit-image">
-          <img src="image/creme retinole.png" alt="Crème Rétinol VITAMAX" loading="lazy">
-        </div>
-        <div class="benefit-content">
-          <p class="benefit-subtitle">Soin topique</p>
-          <h3>Crème Rétinol & Hydratation</h3>
-          <ul class="benefit-list">
-            <li>Hydratation profonde et renforcement de la barrière cutanée</li>
-            <li>Actifs qui aident à atténuer les signes de l'âge</li>
-            <li>Peau plus souple, fraîche et confortable</li>
-            <li>Texture légère, facile à intégrer dans votre routine</li>
-          </ul>
-        </div>
-      </article>
+        <article class="benefit-card benefit-featured">
+          <div class="benefit-image">
+            <img src="image/creme retinole.png" alt="Crème Rétinol VITAMAX" loading="lazy">
+          </div>
+          <div class="benefit-content">
+            <p class="benefit-subtitle">Soin topique</p>
+            <h3>Crème Rétinol & Hydratation</h3>
+            <p class="benefit-desc">L’atout soin du pack : hydratation et actifs anti-âge pour une peau lisse et lumineuse.</p>
+            <ul class="benefit-list">
+              <li>Hydratation et barrière cutanée</li>
+              <li>Signes de l’âge atténués</li>
+              <li>Texture légère, routine simple</li>
+            </ul>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -1509,6 +1597,7 @@
         <p class="section-label">Formules disponibles</p>
         <h2 class="section-title">Choisissez votre formule</h2>
       </div>
+      <p class="abonnement-intro">Nous proposons une formule d’abonnement pour notre produit phare, le Pack Beauté & Jeunesse. Choisissez la cadence qui vous convient : découverte en achat unique, mensuel ou trimestriel pour profiter de nos meilleurs tarifs et ne jamais manquer de vos actifs beauté.</p>
       <div class="abonnement-toggle" role="tablist" aria-label="Sélectionner Mensuel ou Trimestriel">
         <button type="button" class="abonnement-toggle-btn is-active" data-formula="mensuel" aria-selected="true">Mensuel</button>
         <button type="button" class="abonnement-toggle-btn" data-formula="trimestriel" aria-selected="false">Trimestriel</button>
@@ -1648,7 +1737,7 @@
         <a href="#faq">FAQ</a>
         <a href="https://wa.me/33752939594?text=Bonjour%2C%20je%20souhaite%20commander%20le%20Pack%20Beaut%C3%A9%20%26%20Jeunesse" target="_blank" rel="noopener">Commander</a>
       </div>
-      <p class="footer-copy">© 2025 VITAMAX. Tous droits réservés.</p>
+      <p class="footer-copy">© 2026 VITAMAX. Tous droits réservés.</p>
     </div>
   </footer>
 
