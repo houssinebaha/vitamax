@@ -175,6 +175,10 @@
       background-repeat: no-repeat;
     }
 
+    .hero-logo-mobile {
+      display: none;
+    }
+
     .hero::before {
       content: '';
       position: absolute;
@@ -1388,22 +1392,31 @@
     }
 
     @media (max-width: 768px) {
-      .nav { display: none; }
-      body { padding-top: 80px; }
-      .header-inner { min-height: 72px; }
-      .logo img { height: 64px; }
-      .header-utils { gap: 12px; }
-      .hero { padding: 32px var(--space) 48px; }
+      .top-bar { display: none; }
+      body { padding-top: 0; }
+      .hero-logo-mobile {
+        display: block;
+        position: absolute;
+        top: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+      }
+      .hero-logo-mobile img {
+        height: 120px;
+        width: auto;
+        display: block;
+        filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
+      }
+      .hero { padding: 140px var(--space) 48px; min-height: 100vh; }
       .hero-decor { display: none; }
       .categories-grid { gap: 20px; }
       .category-circle { width: 120px; height: 120px; }
     }
 
     @media (max-width: 480px) {
-      .announcement { font-size: 0.75rem; padding: 8px 16px; }
-      body { padding-top: 70px; }
-      .header-inner { min-height: 64px; padding: 8px var(--space); }
-      .logo img { height: 56px; }
+      .hero-logo-mobile img { height: 100px; }
+      .hero { padding-top: 120px; }
     }
   </style>
 </head>
@@ -1426,6 +1439,9 @@
 
   <!-- Hero -->
   <section class="hero">
+    <a href="#" class="hero-logo-mobile" aria-label="VITAMAX">
+      <img src="image/logo without background.png" alt="VITAMAX" loading="eager">
+    </a>
     <div class="hero-decor hero-decor-1" aria-hidden="true">
       <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8" xmlns="http://www.w3.org/2000/svg">
         <path d="M50 5 Q65 25 50 50 Q35 75 20 50 Q35 25 50 5"/>
