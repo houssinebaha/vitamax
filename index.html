@@ -706,8 +706,19 @@
       .pack-cta-block {
         flex-direction: column;
         gap: 32px;
+        align-items: center;
+        text-align: center;
       }
-      .pack-cta-image { flex: none; max-width: 320px; }
+      .pack-cta-image {
+        flex: none;
+        max-width: 320px;
+        margin: 0 auto;
+      }
+      .pack-cta-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
     }
 
     /* Témoignages */
@@ -1283,6 +1294,49 @@
     .footer-copy {
       font-size: 0.8125rem;
       opacity: 0.6;
+    }
+
+    @media (max-width: 768px) {
+      .footer {
+        padding: 40px var(--space) 24px;
+      }
+      .footer-inner {
+        max-width: 360px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .footer .logo img {
+        height: 48px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .footer p {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 8px;
+      }
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px 20px;
+        margin-bottom: 20px;
+      }
+      .footer-links a {
+        display: inline-block;
+      }
+      .footer-copy {
+        margin-bottom: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .footer {
+        padding: 32px 20px 20px;
+      }
+      .footer-links {
+        gap: 10px 16px;
+      }
     }
 
     /* Bouton WhatsApp flottant */
