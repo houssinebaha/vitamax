@@ -8,15 +8,15 @@
   --color-dark: #3D2B1F;
   --color-text: #3D2B1F;
   --color-muted: #5C3D2E;
-  --color-primary: #F2C4CE;
-  --color-primary-hover: #B2C5B0;
+  --color-primary: #D4AF7A;
+  --color-primary-hover: #F2C4CE;
   --color-bg: #FAF3E0;
   --color-bg-cream: #FAF3E0;
   --color-white: #ffffff;
-  --color-accent: #D4AF7A;
+  --color-accent: #F2C4CE;
   --color-secondary: #B2C5B0;
-  --color-border: rgba(242, 196, 206, 0.25);
-  --color-shadow: rgba(242, 196, 206, 0.15);
+  --color-border: rgba(212, 175, 122, 0.25);
+  --color-shadow: rgba(212, 175, 122, 0.15);
   --container: 1120px;
   --container-narrow: 680px;
   --space: 24px;
@@ -245,7 +245,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .btn-primary:hover {
-  background: var(--color-secondary);
+  background: var(--color-accent);
   transform: translateY(-1px);
   box-shadow: 0 6px 20px var(--color-shadow);
 }
@@ -276,7 +276,7 @@ a { text-decoration: none; color: inherit; }
 .section-testimonials { background: var(--color-bg-cream); }
 .section-pricing { background: var(--color-white); }
 .section-faq { background: var(--color-bg-cream); }
-.section-cta { background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-accent) 100%); color: var(--color-white); text-align: center; }
+.section-cta { background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-secondary) 100%); color: var(--color-white); text-align: center; }
 
 .container {
   max-width: var(--container);
