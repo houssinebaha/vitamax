@@ -5,18 +5,18 @@
    ============================================ */
 
 :root {
-  --color-dark: #5a4d5f;
-  --color-text: #5a4d5f;
-  --color-muted: #8a7d8f;
-  --color-primary: #C3A6C9;
-  --color-primary-hover: #A8D5C2;
-  --color-bg: #FFFFFF;
-  --color-bg-cream: #E8E8E8;
+  --color-dark: #8B3A52;
+  --color-text: #8B3A52;
+  --color-muted: #9d6075;
+  --color-primary: #E8B4B8;
+  --color-primary-hover: #C9A96E;
+  --color-bg: #FDFAF6;
+  --color-bg-cream: #FDFAF6;
   --color-white: #ffffff;
-  --color-accent: #A8D5C2;
-  --color-secondary: #E8E8E8;
-  --color-border: rgba(195, 166, 201, 0.2);
-  --color-shadow: rgba(195, 166, 201, 0.15);
+  --color-accent: #C9A96E;
+  --color-secondary: #8B3A52;
+  --color-border: rgba(232, 180, 184, 0.25);
+  --color-shadow: rgba(232, 180, 184, 0.15);
   --container: 1120px;
   --container-narrow: 680px;
   --space: 24px;
