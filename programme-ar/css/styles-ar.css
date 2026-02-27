@@ -270,12 +270,12 @@ a { text-decoration: none; color: inherit; }
   padding: 60px var(--space) 64px;
 }
 
-.section-problem { background: var(--color-white); }
-.section-solution { background: var(--color-bg-cream); }
-.section-programme { background: var(--color-white); }
-.section-testimonials { background: var(--color-bg-cream); }
-.section-pricing { background: var(--color-white); }
-.section-faq { background: var(--color-bg-cream); }
+.section-problem { background: linear-gradient(160deg, #F2C4CE 0%, rgba(242, 196, 206, 0.6) 100%); }
+.section-solution { background: linear-gradient(160deg, rgba(212, 175, 122, 0.3) 0%, #F2C4CE 100%); }
+.section-programme { background: linear-gradient(160deg, #F2C4CE 0%, rgba(242, 196, 206, 0.7) 100%); }
+.section-testimonials { background: linear-gradient(160deg, rgba(212, 175, 122, 0.4) 0%, #F2C4CE 100%); }
+.section-pricing { background: linear-gradient(160deg, #F2C4CE 0%, rgba(242, 196, 206, 0.8) 100%); }
+.section-faq { background: linear-gradient(160deg, rgba(212, 175, 122, 0.3) 0%, #F2C4CE 100%); }
 .section-cta { background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-secondary) 100%); color: var(--color-white); text-align: center; }
 
 .container {
